@@ -57,8 +57,9 @@ app.post('/api/users', async (req, res) => {
     try {
         const newUser = {
             name: req.body.name,
+            userType: req.body.userType,
             email: req.body.email,
-            discipline: req.body.discipline,
+            discipline: req.body.discipline
         };
         const userRef = await db.collection('users').add(newUser);
         res.status(201).json({ id: userRef.id, ...newUser });
@@ -78,6 +79,7 @@ app.put('/api/users/:id', async (req, res) => {
 
         const updatedUser = {
             name: req.body.name,
+            userType: req.body.userType,
             email: req.body.email,
             discipline: req.body.discipline,
         };

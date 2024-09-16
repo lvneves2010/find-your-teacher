@@ -4,6 +4,7 @@ import axios from 'axios';
 const App = () => {
   const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
+  const [userType, setUserType] = useState('');
   const [email, setEmail] = useState('');
   const [discipline, setDiscipline] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,9 +34,10 @@ const App = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const newUser = { name, email, discipline };
+      const newUser = { name, userType, email, discipline };
       await axios.post('http://localhost:5000/api/users', newUser);
       setName('');
+      setUserType('');
       setEmail('');
       setDiscipline('');
       fetchUsers(); // Refresh user list after adding a new user
@@ -59,6 +61,15 @@ const App = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Type:</label>
+          <input
+            type="text"
+            value={userType}
+            onChange={(e) => setUserType(e.target.value)}
             required
           />
         </div>
@@ -90,12 +101,28 @@ const App = () => {
       {loading && <p>Loading...</p>}
 
       {/* List of users */}
-      <h2>List of Users</h2>
+      <h2>List of Providers</h2>
       <ul>
         {users.map((user) => (
-          <li key={user.id}>
-            {user.name} ({user.email}) {user.discipline}
-          </li>
+          <div>
+            { user.userType === 'Provider' &&
+            <li key={user.id}>
+              {user.name} ({user.email}) {user.discipline}
+            </li>
+            }
+          </div>
+        ))}
+      </ul>
+      <h2>List of Consumers</h2>
+      <ul>
+        {users.map((user) => (
+          <div>
+            { user.userType === 'Consumer' &&
+              <li key={user.id}>
+                {user.name} ({user.email})
+              </li>
+            }
+          </div>
         ))}
       </ul>
     </div>
@@ -103,31 +130,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
-// import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Leo
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
